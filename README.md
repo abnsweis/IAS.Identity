@@ -72,7 +72,29 @@ The goal of this project is to centralize authentication and authorization logic
 Developed by: **IBRAHIM AL SWEIS**
 
 ---
+## 👤 Default Users
 
+The system comes with pre-seeded users for testing purposes:
+
+### 🔴 SuperAdmin
+- Username: `superadmin`  
+- Password: `@Admin123`  
+- Role: `SuperAdmin`
+
+### 🟠 Admin
+- Username: `admin`  
+- Password: `@Admin123`  
+- Role: `Admin`
+
+### 🟢 User
+- Username: `user`  
+- Password: `@Admin123`  
+- Role: `User`
+
+> ⚠️ Note: These accounts are for development and testing purposes only.  
+> It is strongly recommended to change or remove them in production.
+>
+> 
 ## ⭐ Note
 
 This project is built for learning and real-world backend system design practice.
