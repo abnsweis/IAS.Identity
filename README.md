@@ -30,8 +30,7 @@ It provides a complete role-based access control system using JWT authentication
 - Entity Framework Core  
 - SQL Server  
 - JWT Authentication  
-- Clean Architecture (Layered Structure)  
-- Mail service integration (Mailgun)  
+- Clean Architecture (Layered Structure)   
 
 ---
 
@@ -70,7 +69,7 @@ The goal of this project is to centralize authentication and authorization logic
 
 ## 👨‍💻 Author
 
-Developed by: **[Your Name]**
+Developed by: **IBRAHIM AL SWEIS**
 
 ---
 
