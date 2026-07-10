@@ -61,5 +61,5 @@ public class CreateUserDto
     /// This collection contains role GUIDs. User will be assigned to all roles in this list.
     /// If empty or null, the user will be assigned to the default "User" role.
     /// </remarks>
-    public List<Guid> Roles { get; set; } = new List<Guid>();
+    public List<string> Roles { get; set; } = new List<string>();
 }

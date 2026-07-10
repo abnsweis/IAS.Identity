@@ -1,11 +1,4 @@
-﻿// ============================================================
-//  CustomExceptionHandler.cs
-//  ASP.NET Core Web API — Global Exception Handler
-//  Using RFC 7807 ProblemDetails standard
-//  Compatible with .NET 8+
-// ============================================================
-
-namespace YourApp.Infrastructure.Exceptions;
+﻿namespace IAS.Identity.Application.Common.Exceptions;
 
 /// <summary>403 – User is authenticated but not allowed.</summary>
 public class ForbiddenException : AppException

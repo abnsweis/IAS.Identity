@@ -1,4 +1,6 @@
-﻿namespace IAS.Identity.Application.Common.Dtos.Users;
+﻿using IAS.Identity.Domain.Enums;
+
+namespace IAS.Identity.Application.Common.Dtos.Users;
 
 /// <summary>
 /// Data transfer object for changing a user's active status
@@ -9,14 +11,6 @@
 public class ChangeUserStatusDto
 {
     /// <summary>
-    /// Gets or sets the unique identifier of the user whose status will be changed
-    /// </summary>
-    /// <remarks>
-    /// This field is required to identify which user to activate or deactivate
-    /// </remarks>
-    public Guid Id { get; set; }
-
-    /// <summary>
     /// Gets or sets the new active status of the user
     /// </summary>
     /// <remarks>
@@ -24,5 +18,5 @@ public class ChangeUserStatusDto
     /// Deactivated users cannot log in to the system.
     /// </remarks>
     /// <example>true</example>
-    public bool IsActive { get; set; }
+    public enUserStatus Status { get; set; }
 }

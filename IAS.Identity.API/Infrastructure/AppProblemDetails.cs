@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace YourApp.Infrastructure.Exceptions;
+namespace IAS.Identity.API.Infrastructure;
 
 public sealed class AppProblemDetails : ProblemDetails
 {

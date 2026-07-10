@@ -1,4 +1,5 @@
-﻿using IAS.Identity.Application.Common.Dtos.Users;
+﻿using IAS.Identity.Application.Common.Dtos.Roles;
+using IAS.Identity.Application.Common.Dtos.Users;
 using IAS.Identity.Application.Common.Models;
 
 namespace IAS.Identity.Application.Common.Interface;
@@ -23,26 +24,30 @@ public interface IUserService
     /// <summary>
     /// Updates an existing user.
     /// </summary>
-    Task<UserDto> UpdateUser(UpdateUserDto updateUserDto);
+    Task UpdateUser(string userId, UpdateUserDto updateUserDto);
 
     /// <summary>
-    /// Deletes a user.
+    /// Activates a user by identifier.
     /// </summary>
-    Task DeleteUser(Guid userId);
+    Task ActivateUser(Guid userId);
+
+    /// <summary>
+    /// Deactivates a user by identifier.
+    /// </summary>
+    Task DeactivateUser(Guid userId);
 
     /// <summary>
     /// Retrieves a user by identifier.
     /// </summary>
     Task<UserDto> GetUserById(Guid userId);
 
-    /// <summary>
-    /// Changes user activation status.
-    /// </summary>
-    Task<bool> Activate(Guid userId);
+    Task RemoveRolesAsync(Guid userId, RemoveRolesFromUserRequest request);
 
-    Task<bool> Deactivate(Guid userId);
+    Task AssignRolesAsync(Guid userId, AssignRolesToUserRequest request);
 
-    Task AssignRole(Guid userId, Guid roleId);
+    Task<List<RoleLookUpDto>> GetUserRoles(string? userId);
 
-    Task AssignRolesAsync(Guid userId, List<Guid> RoleIds);
+    Task<bool> IsEmailAvailableAsync(string email);
+
+    Task<bool> IsUsernameAvailableAsync(string username);
 }

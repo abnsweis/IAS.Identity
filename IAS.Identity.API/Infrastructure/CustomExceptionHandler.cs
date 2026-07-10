@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using IAS.Identity.Application.Common.Exceptions;
+using IAS.Identity.Domain.Common.Exceptions;
+using IAS.Identity.Domain.Common.Exceptions.Users;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.WebUtilities;
-using YourApp.Infrastructure.Exceptions;
 
 namespace IAS.Identity.API.Infrastructure;
 
@@ -62,42 +64,32 @@ public sealed class GlobalExceptionHandler(
 
     // ── Exception → ProblemDetails mapping ───────────────────
     private static (int status, string code, string title, string message,
-                    IDictionary<string, string[]>? errors)
-        MapException(Exception ex) => ex switch
-        {
-            BadRequestException { ValidationErrors: not null } bre => (
-                400, bre.ErrorCode,
-                "Validation Error",
-                bre.Message,
-                bre.ValidationErrors),
+                 IDictionary<string, string[]>? errors)
+     MapException(Exception ex) => ex switch
+     {
+         BadRequestException { ValidationErrors: not null } bre => (
+             400, bre.ErrorCode, "Validation Error",
+             bre.Message, bre.ValidationErrors),
 
-            AppException app => (
-                app.StatusCode, app.ErrorCode,
-                ReasonPhrases.GetReasonPhrase(app.StatusCode),
-                app.Message, null),
+         UsernameAlreadyExistsException e =>
+             (409, "USERNAME_ALREADY_EXISTS", "Conflict", e.Message, null),
 
-            OperationCanceledException =>
-                (499, "REQUEST_CANCELLED", "Request Cancelled",
-                 "The request was cancelled by the client.", null),
+         DomainException e =>
+             (422, "DOMAIN_RULE_VIOLATED", "Business Rule Violation", e.Message, null),
+         ForbiddenException e =>
+             (403, "FORBIDDEN", "Forbidden", $"Access forbidden: {e.Message}", null),
+         // ── AppException ──────────────────────────────────────
+         AppException app => (
+             app.StatusCode, app.ErrorCode,
+             ReasonPhrases.GetReasonPhrase(app.StatusCode),
+             app.Message, null),
 
-            KeyNotFoundException =>
-                (404, "NOT_FOUND", "Not Found", ex.Message, null),
+         // ── System ───────────────────────────────────────────
+         OperationCanceledException =>
+             (499, "REQUEST_CANCELLED", "Request Cancelled",
+              "The request was cancelled.", null),
 
-            UnauthorizedAccessException =>
-                (401, "UNAUTHORIZED", "Unauthorized",
-                 "Authentication is required.", null),
-
-            ArgumentNullException or ArgumentException =>
-                (400, "BAD_ARGUMENT", "Bad Request", ex.Message, null),
-
-            InvalidOperationException =>
-                (422, "INVALID_OPERATION", "Unprocessable Entity", ex.Message, null),
-
-            TimeoutException =>
-                (408, "REQUEST_TIMEOUT", "Request Timeout",
-                 "The operation timed out.", null),
-
-            _ => (500, "INTERNAL_SERVER_ERROR", "Internal Server Error",
-                  "An unexpected error occurred. Please try again later.", null)
-        };
+         _ => (500, "INTERNAL_SERVER_ERROR", "Internal Server Error",
+               "An unexpected error occurred.", null)
+     };
 }

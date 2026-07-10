@@ -1,4 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
+using IAS.Identity.Application.Common.Validators.Users;
+using IAS.Identity.Application.Common.Validators.Password;
+using IAS.Identity.Domain.Common.Options;
+using IAS.Identity.Application.Common.Models;
 
 namespace IAS.Identity.Application
 {
@@ -6,7 +11,8 @@ namespace IAS.Identity.Application
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
-            // Register application services here if needed
+            services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
+            services.AddSingleton<PasswordFluentValidator>();
         }
     }
 }

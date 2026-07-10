@@ -13,9 +13,6 @@ public static class ExceptionHandlerExtensions
         {
             options.CustomizeProblemDetails = ctx =>
             {
-                // Ensure TraceId is always injected even for non-exception responses
-                ctx.ProblemDetails.Extensions.TryAdd("traceId", ctx.HttpContext.TraceIdentifier);
-                ctx.ProblemDetails.Extensions.TryAdd("timestamp", DateTime.UtcNow);
             };
         });
 

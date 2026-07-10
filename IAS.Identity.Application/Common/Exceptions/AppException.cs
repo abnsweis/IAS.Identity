@@ -1,4 +1,4 @@
-﻿namespace YourApp.Infrastructure.Exceptions;
+﻿namespace IAS.Identity.Application.Common.Exceptions;
 
 /// <summary>Base class for all domain/application exceptions.</summary>
 public abstract class AppException : Exception

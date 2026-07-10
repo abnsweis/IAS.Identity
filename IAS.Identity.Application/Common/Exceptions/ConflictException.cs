@@ -1,15 +1,8 @@
-﻿// ============================================================
-//  CustomExceptionHandler.cs
-//  ASP.NET Core Web API — Global Exception Handler
-//  Using RFC 7807 ProblemDetails standard
-//  Compatible with .NET 8+
-// ============================================================
-
-namespace YourApp.Infrastructure.Exceptions;
+﻿namespace IAS.Identity.Application.Common.Exceptions;
 
 /// <summary>409 – Conflict (e.g., duplicate resource).</summary>
 public class ConflictException : AppException
 {
-    public ConflictException(string message)
-        : base(message, 409, "CONFLICT") { }
+    public ConflictException(string message, string code)
+        : base(message, 409, code) { }
 }

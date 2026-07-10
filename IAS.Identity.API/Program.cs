@@ -5,6 +5,12 @@ using IAS.Identity.Infrastructure.Data;
 using IAS.Identity.Infrastructure.Persistence.Seed;
 using Scalar.AspNetCore;
 using Mapster;
+using FluentValidation;
+using IAS.Identity.Application.Common.Dtos.Users;
+using Microsoft.Extensions.DependencyInjection;
+using IAS.Identity.Application.Common.Converters;
+using IAS.Identity.Application.Common.Models;
+using IAS.Identity.Application.Common.Interface;
 
 namespace IAS.Identity.API
 {
@@ -16,14 +22,21 @@ namespace IAS.Identity.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new FlexibleEnumConverterFactory());
+                });
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
-            builder.Services.AddApiServices();
+            builder.Services.AddApiServices(builder.Configuration);
             builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructureServices(builder.Configuration);
 
             builder.Services.AddGlobalExceptionHandler();
+            builder.Services.Configure<JwtSettings>(
+                builder.Configuration.GetSection("JwtSettings")
+            );
 
             var app = builder.Build();
 
@@ -37,7 +50,7 @@ namespace IAS.Identity.API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
@@ -46,7 +59,17 @@ namespace IAS.Identity.API
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-                await DatabaseSeeder.SeedAll(dbContext);
+                var passwordHasher =
+                    scope.ServiceProvider
+                         .GetRequiredService<IPasswordHasherService>();
+                await dbContext.Database.EnsureCreatedAsync();
+                await DatabaseSeeder.SeedAll(dbContext, passwordHasher);
+
+                // ›Ì √Ì „ﬂ«‰ ⁄‰œﬂ IServiceProvider
+                var validator = scope.ServiceProvider.GetService<IValidator<CreateUserDto>>();
+
+                if (validator is null)
+                    throw new Exception("CreateUserDtoValidator is not registered!");
             }
             app.Run();
         }

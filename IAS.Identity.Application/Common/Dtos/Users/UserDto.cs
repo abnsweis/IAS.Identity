@@ -1,4 +1,5 @@
 ﻿using IAS.Identity.Application.Common.Dtos.Roles;
+using IAS.Identity.Domain.Enums;
 
 namespace IAS.Identity.Application.Common.Dtos.Users;
 
@@ -56,5 +57,5 @@ public class UserDto
     /// <remarks>
     /// Active users can log in; inactive users cannot
     /// </remarks>
-    public bool IsActive { get; set; }
+    public string? Status { get; set; }
 }

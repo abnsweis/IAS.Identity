@@ -15,7 +15,7 @@ public class UpdateUserDto
     /// <remarks>
     /// This field is required to identify which user to update
     /// </remarks>
-    public Guid Id { get; set; }
+    public string? Id { get; set; }
 
     /// <summary>
     /// Gets or sets the updated full name of the user (optional)
@@ -62,5 +62,5 @@ public class UpdateUserDto
     /// If empty list is provided, the user will be removed from all roles.
     /// If null, existing role assignments will be kept unchanged.
     /// </remarks>
-    public List<Guid> Roles { get; set; } = new List<Guid>();
+    public List<string> Roles { get; set; } = new List<string>();
 }
